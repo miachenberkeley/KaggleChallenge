@@ -3,7 +3,7 @@ import operator
 import pandas as pd
 from collections import Counter
 
-path_to_data = '../Desktop/KaggleChallenge/'
+path_to_data = './'
 
 ##########################
 # load some of the files #
@@ -12,6 +12,7 @@ path_to_data = '../Desktop/KaggleChallenge/'
 training = pd.read_csv(path_to_data + 'training_set.csv', sep=',', header=0)
 
 training_info = pd.read_csv(path_to_data + 'training_info.csv', sep=',', header=0)
+print(training_info)
 
 test = pd.read_csv(path_to_data + 'test_set.csv', sep=',', header=0)
 
@@ -27,8 +28,11 @@ for index, series in training.iterrows():
     ids = row[1:][0].split(' ')
     emails_ids_per_sender[sender] = ids
 
+
 # save all unique sender names
 all_senders = emails_ids_per_sender.keys()
+#print(emails_ids_per_sender)
+print(ids)
 
 # create address book with frequency information for each user
 address_books = {}
@@ -38,14 +42,16 @@ for sender, ids in emails_ids_per_sender.iteritems():
     recs_temp = []
     for my_id in ids:
         recipients = training_info[training_info['mid'] == int(my_id)]['recipients'].tolist()
+        print(recipients)
         recipients = recipients[0].split(' ')
         # keep only legitimate email addresses
         recipients = [rec for rec in recipients if '@' in rec]
         recs_temp.append(recipients)
     # flatten
-    recs_temp = [elt for sublist in recs_temp for elt in sublist]
+    recs_temp = [elt for sublist in recs_temp for elt in sublist] #np concanate
     # compute recipient counts
     rec_occ = dict(Counter(recs_temp))
+    #print(rec_occ)
     # order by frequency
     sorted_rec_occ = sorted(rec_occ.items(), key=operator.itemgetter(1), reverse=True)
     # save
@@ -95,7 +101,7 @@ for index, row in test.iterrows():
 # write predictions in proper format for Kaggle #
 #################################################
 
-# path_to_results = # fill me!
+path_to_results = '../Desktop/KaggleChallenge/'
 
 with open(path_to_results + 'predictions_random.txt', 'wb') as my_file:
     my_file.write('mid,recipients' + '\n')
