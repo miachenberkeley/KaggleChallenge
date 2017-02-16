@@ -2,6 +2,8 @@ import random
 import operator
 import pandas as pd
 from collections import Counter
+from library import clean_text_simple, terms_to_graph, unweighted_k_core
+
 
 path_to_data = './'
 
@@ -12,7 +14,6 @@ path_to_data = './'
 training = pd.read_csv(path_to_data + 'training_set.csv', sep=',', header=0)
 
 training_info = pd.read_csv(path_to_data + 'training_info.csv', sep=',', header=0)
-print(training_info)
 
 test = pd.read_csv(path_to_data + 'test_set.csv', sep=',', header=0)
 
@@ -32,7 +33,7 @@ for index, series in training.iterrows():
 # save all unique sender names
 all_senders = emails_ids_per_sender.keys()
 #print(emails_ids_per_sender)
-print(ids)
+#print(ids)
 
 # create address book with frequency information for each user
 address_books = {}
@@ -42,7 +43,6 @@ for sender, ids in emails_ids_per_sender.iteritems():
     recs_temp = []
     for my_id in ids:
         recipients = training_info[training_info['mid'] == int(my_id)]['recipients'].tolist()
-        print(recipients)
         recipients = recipients[0].split(' ')
         # keep only legitimate email addresses
         recipients = [rec for rec in recipients if '@' in rec]
@@ -61,6 +61,7 @@ for sender, ids in emails_ids_per_sender.iteritems():
         print i
     i += 1
 
+
 # save all unique recipient names
 all_recs = list(set([elt[0] for sublist in address_books.values() for elt in sublist]))
 
@@ -73,6 +74,8 @@ all_users = list(set(all_users))
 #############
 # baselines #
 #############
+
+
 
 # will contain email ids, predictions for random baseline, and predictions for frequency baseline
 predictions_per_sender = {}
@@ -97,11 +100,17 @@ for index, row in test.iterrows():
         freq_preds.append(k_most)
     predictions_per_sender[sender] = [ids_predict, random_preds, freq_preds]
 
+
+
+
+
+
+
 #################################################
 # write predictions in proper format for Kaggle #
 #################################################
 
-path_to_results = '../Desktop/KaggleChallenge/'
+path_to_results = './'
 
 with open(path_to_results + 'predictions_random.txt', 'wb') as my_file:
     my_file.write('mid,recipients' + '\n')
