@@ -3,7 +3,7 @@ import operator
 import pandas as pd
 from collections import Counter
 
-# path_to_data = # fill me!
+path_to_data = '../Desktop/KaggleChallenge/'
 
 ##########################
 # load some of the files #
