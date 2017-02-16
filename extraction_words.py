@@ -25,7 +25,6 @@ for mid, info in zip(training_info['mid'], training_info['body']):
     except :
         print "info", info
         print "my_tokens", my_tokens
-        raise  "il y a une erreur"
 
 
     if len(my_tokens) == 0:
@@ -64,7 +63,11 @@ counter = 0
 
 for mid, info in zip(training_info['mid'], training_info['body']):
     # pre-process document
-    my_tokens = clean_text_simple(info)
+    try :
+        my_tokens = clean_text_simple(info)
+    except :
+        print "info", info
+        print "my_tokens", my_tokens
 
     if len(my_tokens) == 0:
         pass

@@ -101,11 +101,6 @@ for index, row in test.iterrows():
     predictions_per_sender[sender] = [ids_predict, random_preds, freq_preds]
 
 
-
-
-
-
-
 #################################################
 # write predictions in proper format for Kaggle #
 #################################################
